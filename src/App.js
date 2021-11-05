@@ -11,7 +11,10 @@ class App extends Component {
     // 그 component를 초기화 시키려면 여기에 코드를 작성하면 된다.
     // => constructor가 있으면 제일 먼저 실행되면서 초기화가 진행된다.
     this.state = {
-      subject: { title: "WEB", sub: "World Wide Web!" },
+      // mode가 welcome 일때
+      mode: 'read',
+      subject: {title: "WEB", sub: "World Wide Web!" },
+      welcome: {title:'Welcome', desc:'Hello, React!!'},
       // 밑의 contents를 아래의 TOC에 주입하고 싶다면
       contents:[
         {id:1, title:'HTML', desc:'HTML is for information'},
@@ -24,6 +27,19 @@ class App extends Component {
 
   // 상위 component의 값을 하위 component에 props의 값으로 하는건 얼마든지 가능하다
   render() {
+    console.log('App render');
+    // mode의 값에 따라 달라지게 조건문 적기
+    var _title, _desc = null;
+    // 보통은 지역변수나 sub function일 경우 이름 앞에 _를 써주는데 
+    // 이는 자바스크립트의 경우 접근제한자(public, private)가 없기 때문에 변수명으로 사용범위를 나타내준다.
+    if(this.state.mode === 'welcome'){
+      _title = this.state.welcome.title;
+      _desc = this.state.welcome.desc;
+    }else if(this.state.mode === 'read'){
+      // 일단 걍 임의로
+      _title = this.state.contents[0].title;
+      _desc = this.state.contents[0].desc;
+    }
     return (
       <div className="App">
         <Subject
@@ -31,12 +47,8 @@ class App extends Component {
           sub={this.state.subject.sub}>  
         </Subject>
         <TOC data={this.state.contents}></TOC>
-        <Content
-          title="HTML"
-          desc="HTML is HyperText Markup Language."
-        ></Content>
-
-        <Counter></Counter>
+        <Content title={_title} desc={_desc}></Content>
+        {/* <Counter></Counter> */}
       </div>
     );
   }
