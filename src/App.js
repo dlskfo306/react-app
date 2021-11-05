@@ -54,8 +54,17 @@ class App extends Component {
             // debugger;
             e.preventDefault();
             // 근데 확인 누르면 리로드 되어버림 (안되게 하자!)
-            alert('hi');
-          }}>{this.state.subject.title}</a></h1>
+
+            // this.state.mode='welcome'; -> 에러 오지게남
+            // 근데 .bind(this) 를 쓰면 사용 가능
+            // 근데 또 ! 저렇게 하면 state가 바뀐지 모름
+            // setState써줘야함.
+            
+            this.setState({
+              mode:'welcome'
+            });
+            
+          }.bind(this)}>{this.state.subject.title}</a></h1>
           {this.state.subject.sub}
         </header>
 
