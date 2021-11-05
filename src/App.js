@@ -12,6 +12,12 @@ class App extends Component {
     // => constructor가 있으면 제일 먼저 실행되면서 초기화가 진행된다.
     this.state = {
       subject: { title: "WEB", sub: "World Wide Web!" },
+      // 밑의 contents를 아래의 TOC에 주입하고 싶다면
+      contents:[
+        {id:1, title:'HTML', desc:'HTML is for information'},
+        {id:2, title:'CSS', desc:'CSS is for design'},
+        {id:3, title:'JavaScript', desc:'JavaScript is for interactive'},
+      ]
     };
   }
 
@@ -24,7 +30,7 @@ class App extends Component {
           title={this.state.subject.title}
           sub={this.state.subject.sub}>  
         </Subject>
-        <TOC></TOC>
+        <TOC data={this.state.contents}></TOC>
         <Content
           title="HTML"
           desc="HTML is HyperText Markup Language."
