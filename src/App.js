@@ -42,10 +42,23 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <Subject
+        {/* <Subject
           title={this.state.subject.title}
           sub={this.state.subject.sub}>  
-        </Subject>
+        </Subject> */}
+        
+        <header>
+          <h1><a href="/" onClick={function(e){
+            // 링크를 클릭했을 때 실행
+            console.log(e);
+            // debugger;
+            e.preventDefault();
+            // 근데 확인 누르면 리로드 되어버림 (안되게 하자!)
+            alert('hi');
+          }}>{this.state.subject.title}</a></h1>
+          {this.state.subject.sub}
+        </header>
+
         <TOC data={this.state.contents}></TOC>
         <Content title={_title} desc={_desc}></Content>
         {/* <Counter></Counter> */}
