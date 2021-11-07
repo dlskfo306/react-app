@@ -40,14 +40,26 @@ class App extends Component {
       _title = this.state.contents[0].title;
       _desc = this.state.contents[0].desc;
     }
+     
+
+
     return (
       <div className="App">
-        {/* <Subject
+        <Subject
           title={this.state.subject.title}
-          sub={this.state.subject.sub}>  
-        </Subject> */}
+          sub={this.state.subject.sub}
+          // subject라는 컴포넌트 안에 
+          // onChangePage라는 이벤트를 직접 생성.
+          // 이벤트에 함수를 설치해주면(function~~)
+          onChangePage={function(){
+            // alert('hihihi');
+            this.setState({ mode: 'welcome' });
+          }.bind(this)}
+        >  
+          
+        </Subject>
         
-        <header>
+        {/* <header>
           <h1><a href="/" onClick={function(e){
             // 링크를 클릭했을 때 실행
             console.log(e);
@@ -66,7 +78,7 @@ class App extends Component {
             
           }.bind(this)}>{this.state.subject.title}</a></h1>
           {this.state.subject.sub}
-        </header>
+        </header> */}
 
         <TOC data={this.state.contents}></TOC>
         <Content title={_title} desc={_desc}></Content>
