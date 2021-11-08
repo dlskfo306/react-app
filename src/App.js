@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import TOC from "./components/TOC";
-import Content from "./components/Content";
+import ReadContent from "./components/ReadContent";
 import Subject from "./components/Subject";
 import Counter from "./components/Counter";
+import Control from "./components/Control";
+import CreateContent from "./components/CreateContent";
 
 class App extends Component {
   constructor(props) {
@@ -30,12 +32,13 @@ class App extends Component {
   render() {
     console.log('App render');
     // mode의 값에 따라 달라지게 조건문 적기
-    var _title, _desc = null;
+    var _title, _desc, _article = null;
     // 보통은 지역변수나 sub function일 경우 이름 앞에 _를 써주는데 
     // 이는 자바스크립트의 경우 접근제한자(public, private)가 없기 때문에 변수명으로 사용범위를 나타내준다.
     if(this.state.mode === 'welcome'){
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
+      _article = <ReadContent title={_title} desc={_desc}></ReadContent>
 
     }else if(this.state.mode === 'read'){
       var i = 0;
@@ -48,6 +51,9 @@ class App extends Component {
         }
         i = i+1;
       }
+      _article = <ReadContent title={_title} desc={_desc}></ReadContent>
+    } else if(this.state.mode === 'create'){
+      _article = <CreateContent></CreateContent>
     }
      
 
@@ -57,49 +63,32 @@ class App extends Component {
         <Subject
           title={this.state.subject.title}
           sub={this.state.subject.sub}
-          // subject라는 컴포넌트 안에
-          // onChangePage라는 이벤트를 직접 생성.
-          // 이벤트에 함수를 설치해주면(function~~)
           onChangePage={function () {
             // alert('hihihi');
             this.setState({ mode: "welcome" });
           }.bind(this)}
         ></Subject>
 
-        {/* <header>
-          <h1><a href="/" onClick={function(e){
-            // 링크를 클릭했을 때 실행
-            console.log(e);
-            // debugger;
-            e.preventDefault();
-            // 근데 확인 누르면 리로드 되어버림 (안되게 하자!)
-
-            // this.state.mode='welcome'; -> 에러 오지게남
-            // 근데 .bind(this) 를 쓰면 사용 가능
-            // 근데 또 ! 저렇게 하면 state가 바뀐지 모름
-            // setState써줘야함.
-            
-            this.setState({
-              mode:'welcome'
-            });
-            
-          }.bind(this)}>{this.state.subject.title}</a></h1>
-          {this.state.subject.sub}
-        </header> */}
-
         <TOC
-          onChangePage={function(id){
+          onChangePage={function (id) {
             //debugger;
             this.setState({
-              mode:'read',
-              selected_content_id:Number(id) // 강제로 숫자로 만들기
+              mode: "read",
+              selected_content_id: Number(id), // 강제로 숫자로 만들기
             });
-
           }.bind(this)}
           data={this.state.contents}
         ></TOC>
-        <Content title={_title} desc={_desc}></Content>
-        {/* <Counter></Counter> */}
+
+        <Control onChangeMode={function(_mode){
+          this.setState({
+            mode: _mode
+          });
+
+        }.bind(this)}></Control>
+
+        {/* 가변적으로 바뀔 수 있게 */}
+        {_article}
       </div>
     );
   }
