@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
       // mode가 welcome 일때
       mode: 'read',
+      selected_content_id: 2, // 기본적으로 2번 컨텐츠가 나오게 설정
       subject: {title: "WEB", sub: "World Wide Web!" },
       welcome: {title:'Welcome', desc:'Hello, React!!'},
       // 밑의 contents를 아래의 TOC에 주입하고 싶다면
@@ -35,10 +36,18 @@ class App extends Component {
     if(this.state.mode === 'welcome'){
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
+
     }else if(this.state.mode === 'read'){
-      // 일단 걍 임의로
-      _title = this.state.contents[0].title;
-      _desc = this.state.contents[0].desc;
+      var i = 0;
+      while(i < this.state.contents.length){
+        var data = this.state.contents[i];
+        if(data.id === this.state.selected_content_id){
+          _title = data.title;
+          _desc = data.desc;
+          break;
+        }
+        i = i+1;
+      }
     }
      
 
@@ -48,17 +57,15 @@ class App extends Component {
         <Subject
           title={this.state.subject.title}
           sub={this.state.subject.sub}
-          // subject라는 컴포넌트 안에 
+          // subject라는 컴포넌트 안에
           // onChangePage라는 이벤트를 직접 생성.
           // 이벤트에 함수를 설치해주면(function~~)
-          onChangePage={function(){
+          onChangePage={function () {
             // alert('hihihi');
-            this.setState({ mode: 'welcome' });
+            this.setState({ mode: "welcome" });
           }.bind(this)}
-        >  
-          
-        </Subject>
-        
+        ></Subject>
+
         {/* <header>
           <h1><a href="/" onClick={function(e){
             // 링크를 클릭했을 때 실행
@@ -80,7 +87,17 @@ class App extends Component {
           {this.state.subject.sub}
         </header> */}
 
-        <TOC data={this.state.contents}></TOC>
+        <TOC
+          onChangePage={function(id){
+            //debugger;
+            this.setState({
+              mode:'read',
+              selected_content_id:Number(id) // 강제로 숫자로 만들기
+            });
+
+          }.bind(this)}
+          data={this.state.contents}
+        ></TOC>
         <Content title={_title} desc={_desc}></Content>
         {/* <Counter></Counter> */}
       </div>

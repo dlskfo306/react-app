@@ -13,7 +13,18 @@ class TOC extends Component{
         // 각각의 항목들은 key 라는 props를 가지고 있어야 한다는 뜻
         // key={각각의 목록을 다른것들과 구분할 수 있는 것, 식별자}
         // 리액트가 내부적으로 필요해서 우리한테 요구하는 사항이기 때문에 그냥 그려려니 하고 넣는 데이터
-        lists.push(<li key={data[i].id}><a href={"/content/"+data[i].id}>{data[i].title}</a></li>);
+        lists.push(
+          <li key={data[i].id}>
+            <a href={"/content/" + data[i].id}
+            data-id = {data[i].id}
+            onClick={function(e){
+              e.preventDefault();
+              this.props.onChangePage(e.target.dataset.id);
+              // id값의 경로를 써주고 디버깅을 해보면 id의 값을 확인할 수 있다.
+            }.bind(this)}
+            >{data[i].title}</a>
+          </li>
+        );
         i = i + 1;
       }
       return(
