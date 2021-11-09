@@ -12,9 +12,13 @@ class App extends Component {
     // render()보다 먼저 실행되면서
     // 그 component를 초기화 시키려면 여기에 코드를 작성하면 된다.
     // => constructor가 있으면 제일 먼저 실행되면서 초기화가 진행된다.
+
+    // contents의 마지막 id값에서 증가시키기
+    this.max_content_id = 3;
+
     this.state = {
       // mode가 welcome 일때
-      mode: 'read',
+      mode: 'create',
       selected_content_id: 2, // 기본적으로 2번 컨텐츠가 나오게 설정
       subject: {title: "WEB", sub: "World Wide Web!" },
       welcome: {title:'Welcome', desc:'Hello, React!!'},
@@ -53,9 +57,22 @@ class App extends Component {
       }
       _article = <ReadContent title={_title} desc={_desc}></ReadContent>
     } else if(this.state.mode === 'create'){
-      _article = <CreateContent></CreateContent>
+      _article = <CreateContent onSubmit={function(_title, _desc){
+        // 새로운 Content값 추가 되게
+        // 디버깅해서 보면 title값(form에서 name="title")은 e.target.title.value값임
+        this.max_content_id = this.max_content_id + 1;
+        // this.state.contents.push(
+        //   {id:this.max_content_id, title:_title, desc:_desc}
+        // );
+
+        var _contents = this.state.contents.concat(
+          {id: this.max_content_id, title: _title, desc: _desc}
+        )
+        this.setState({
+          contents: _contents
+        });
+      }.bind(this)}></CreateContent>
     }
-     
 
 
     return (
